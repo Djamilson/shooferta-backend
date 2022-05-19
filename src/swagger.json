@@ -1,0 +1,52 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Shooferta Documentation",
+    "description": "This is an API Shooferta",
+    "version": "1.0.0",
+    "contact": {
+      "email": "djamilson@gmail.com"
+    }
+  },
+  "paths": {
+    "/products": {
+      "post": {
+        "summary": "Create a product",
+        "description": "Create a new product",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sku": { "type": "string" },
+                  "bar_code": { "type": "string" },
+                  "other": { "type": "string" },
+                  "link": { "type": "string" },
+                  "stock": { "type": "number" },
+                  "status": { "type": "boolean" }
+                },
+                "exemple": {
+                  "sku": "STD",
+                  "bar_code": "99989989",
+                  "other": "string",
+                  "link": "https://app.rocketseat.com.br/node/chapter-ii-2/group/iniciando-a-documentacao/lesson/criando-a-documentacao-de-criacao-de-categoria",
+                  "stock": 100,
+                  "status": true
+                }
+              }
+            }
+          }
+        },
+        "response": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Product already exists"
+          }
+        }
+      }
+    }
+  }
+}
