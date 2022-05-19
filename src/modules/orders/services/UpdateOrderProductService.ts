@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
-import { StatusOrderEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import { inject, injectable } from 'tsyringe';
+import { StatusOrderEnum } from '../../../../prisma/generated/postgres';
 import { OrderProduct } from '../infra/typeprisma/entities/OrderProduct';
 import IOrdersProductsRepository from '../repositories/IOrdersProductsRepository';
 import IOrdersRepository from '../repositories/IOrdersRepository';

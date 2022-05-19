@@ -1,5 +1,5 @@
-import { PrismaClient as PrismaClientPostgres } from '../postgres/generated/postgres';
-import { PrismaClient as PrismaClientMongoDb } from '../mongodb/generated/mongodb';
+import { PrismaClient as PrismaClientMongoDb } from '../../../../../prisma/generated/mongodb';
+import { PrismaClient as PrismaClientPostgres } from '../../../../../prisma/generated/postgres';
 
 const postgres = new PrismaClientPostgres({
   log: ['query', 'info'],

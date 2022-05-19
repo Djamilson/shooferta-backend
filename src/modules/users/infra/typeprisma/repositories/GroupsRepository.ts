@@ -1,7 +1,7 @@
 import IGroupsRepository from '@modules/users/repositories/IGroupsRepository';
 import { IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { Prisma } from '@shared/infra/prisma/postgres/generated/postgres';
+import { Prisma } from '../../../../../../prisma/generated/postgres';
 import { Group } from '../entities/Group';
 
 class GroupsRepository implements IGroupsRepository {

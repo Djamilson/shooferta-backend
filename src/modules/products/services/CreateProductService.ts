@@ -1,13 +1,12 @@
 import { ICategoriesRepository } from '@modules/categories/repositories/ICategoriesRepository';
 import { ISubCategoriesRepository } from '@modules/subcategories/repositories/ISubCategoriesRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-// import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
 import {
   StockActionEnum,
   StocksStatusEnum,
-} from '@shared/infra/prisma/postgres/generated/postgres';
-import { inject, injectable } from 'tsyringe';
+} from '../../../../prisma/generated/postgres';
 import { Product } from '../infra/typeprisma/entities/Product';
 import { IDescriptionsRepository } from '../repositories/IDescriptionsRepository';
 import { IProductsRepository } from '../repositories/IProductsRepository';

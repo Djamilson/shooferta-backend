@@ -1,5 +1,4 @@
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import IForgottenCartsRepository from '../repositories/IForgottenCartsRepository';
@@ -17,9 +16,6 @@ class UpdateForgottenCartService {
 
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({

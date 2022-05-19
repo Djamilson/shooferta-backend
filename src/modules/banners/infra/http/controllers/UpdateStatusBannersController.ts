@@ -1,8 +1,7 @@
-import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { UpdateBannerStatusService } from '@modules/banners/services/UpdateBannerStatusService';
+import { plainToInstance } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-
-import { UpdateBannerStatusService } from '@modules/banners/services/UpdateBannerStatusService';
 import { Banner } from '../../typeprisma/entities/Banner';
 
 class UpdateStatusBannersController {

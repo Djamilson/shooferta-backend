@@ -1,6 +1,6 @@
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { TypeCategoryEnum } from '../../../../prisma/generated/postgres';
 import { inject, injectable } from 'tsyringe';
 import { Category } from '../infra/typeprisma/entities/Category';
 import { ICategoriesRepository } from '../repositories/ICategoriesRepository';

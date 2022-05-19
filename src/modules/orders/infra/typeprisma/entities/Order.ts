@@ -1,5 +1,5 @@
 import User from '@modules/users/infra/typeprisma/entities/User';
-import { StatusOrderEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StatusOrderEnum } from '../../../../../../prisma/generated/postgres';
 import { OrderProduct } from './OrderProduct';
 
 class Order {

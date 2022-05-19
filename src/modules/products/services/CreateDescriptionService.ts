@@ -11,22 +11,22 @@ type IProps = {
 class CreateDescriptionService {
   constructor(
     @inject('DescriptionsRepository')
-    private descripionsRepository: IDescriptionsRepository,
+    private descriptionsRepository: IDescriptionsRepository,
   ) {}
 
   public async execute({ description }: IProps): Promise<Description> {
     try {
       const checkDescriptionExists =
-        await this.descripionsRepository.findByDescription(description);
+        await this.descriptionsRepository.findByDescription(description);
 
       if (checkDescriptionExists) {
         return checkDescriptionExists;
       }
 
-      const meDescripion = await this.descripionsRepository.create({
+      const meDescripion = await this.descriptionsRepository.create({
         description: description.replace(/\s{2,}/g, ' '),
       });
-      
+
       return meDescripion;
     } catch (error: any) {
       throw new AppError(error.message, error.statusCode);

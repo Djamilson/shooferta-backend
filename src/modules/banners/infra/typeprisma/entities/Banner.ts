@@ -7,7 +7,7 @@ class Banner {
   type: string;
   priority: number;
   status: boolean;
-  
+
   @Exclude()
   created_at: Date;
 

@@ -2,7 +2,7 @@ import { IInfoDTO } from '@modules/__DTOS';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
-import { getUrlImage } from 'utils/getUrlImage';
+import { getUrlImage } from '../../../utils/getUrlImage';
 import { Photo } from '../infra/typeprisma/entities/Photo';
 import { Product } from '../infra/typeprisma/entities/Product';
 import { IProductsRepository } from '../repositories/IProductsRepository';

@@ -22,7 +22,7 @@ class BannersRepository implements IBannersRepository {
 
   public async findByName(name: string): Promise<Banner | null> {
     const banner = await this.prismaRepository.banner.findFirst({
-       where: { name: { equals: name, mode: 'insensitive' } },
+      where: { name: { equals: name, mode: 'insensitive' } },
     });
     return banner as unknown as Banner;
   }
