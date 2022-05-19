@@ -1,9 +1,9 @@
 import { Product } from '@modules/products/infra/typeprisma/entities/Product';
+import { Exclude } from 'class-transformer';
 import {
   StockActionEnum,
   StocksStatusEnum,
-} from '@shared/infra/prisma/postgres/generated/postgres';
-import { Exclude } from 'class-transformer';
+} from '../../../../../../prisma/generated/postgres';
 
 class Stock {
   id: string;

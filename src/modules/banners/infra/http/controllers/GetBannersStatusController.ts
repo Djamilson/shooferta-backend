@@ -11,8 +11,6 @@ class GetBannersStatusController {
 
       const { status } = req.query;
 
-      console.log('req.params', req.query);
-
       const banners = await listBanners.execute({
         status: String(status) === 'true',
       });

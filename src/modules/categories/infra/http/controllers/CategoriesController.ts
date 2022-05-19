@@ -1,10 +1,10 @@
 import { CreateCategory } from '@modules/categories/services/CreateCategory';
 import { ListCategories } from '@modules/categories/services/ListCategories';
 import { ListCategoryByIdService } from '@modules/categories/services/ListCategoryByIdService';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import { instanceToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { TypeCategoryEnum } from '../../../../../../prisma/generated/postgres';
 
 export default class CategoriesController {
   async show(request: Request, response: Response): Promise<Response> {

@@ -6,7 +6,7 @@ import { CategoryProduct } from '@modules/products/infra/typeprisma/entities/Cat
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
 import AppError from '@shared/errors/AppError';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { TypeCategoryEnum } from '../../../../../../prisma/generated/postgres';
 import { ICategoriesRepository } from '../../../repositories/ICategoriesRepository';
 import { Category } from '../entities/Category';
 
@@ -97,7 +97,6 @@ class CategoriesRepository implements ICategoriesRepository {
           },
         })) as unknown as Category[];
 
-
         console.log('==> categories', categories);
       }
 
@@ -106,7 +105,7 @@ class CategoriesRepository implements ICategoriesRepository {
         total,
       };
     } catch (e) {
-      console.log("eroor:",e)
+      console.log('eroor:', e);
     }
   }
 

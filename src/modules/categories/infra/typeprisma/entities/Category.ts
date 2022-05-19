@@ -1,7 +1,7 @@
 import uploadConfig from '@config/upload';
 import { CategoryProduct } from '@modules/products/infra/typeprisma/entities/CategoryProduct';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import { Exclude, Expose } from 'class-transformer';
+import { TypeCategoryEnum } from '../../../../../../prisma/generated/postgres';
 
 class Category {
   id: string;

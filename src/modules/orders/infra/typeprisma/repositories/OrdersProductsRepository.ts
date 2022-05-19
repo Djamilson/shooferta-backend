@@ -1,7 +1,7 @@
 import IOrdersProductsRepository from '@modules/orders/repositories/IOrdersProductsRepository';
 import { IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { StatusOrderEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StatusOrderEnum } from '../../../../../../prisma/generated/postgres';
 import { OrderProduct } from '../entities/OrderProduct';
 
 class OrdersProductsRepository implements IOrdersProductsRepository {
@@ -109,7 +109,7 @@ class OrdersProductsRepository implements IOrdersProductsRepository {
   }: IPropsUpdateData): Promise<OrderProduct> {
     const orderProduct = await this.prismaRepository.orderProduct.update({
       where: {
-        id,
+        id: String(id),
       },
       data: updateData,
     });

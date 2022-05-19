@@ -1,5 +1,4 @@
 import { Banner } from '@modules/banners/infra/typeprisma/entities/Banner';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { inject, injectable } from 'tsyringe';
 import { IBannersRepository } from '../repositories/IBannersRepository';
 
@@ -8,9 +7,6 @@ class ListBannersService {
   constructor(
     @inject('BannersRepository')
     private bannersRepository: IBannersRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
   async execute(): Promise<Banner[] | null> {

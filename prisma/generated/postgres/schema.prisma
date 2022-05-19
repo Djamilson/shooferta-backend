@@ -1,0 +1,537 @@
+datasource postgresdb {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_POSTGRES")
+}
+
+generator clientPostgres {
+  provider        = "prisma-client-js"
+  output          = "../../../../../prisma/generated/postgres"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+enum GroupsNameEnum {
+  ROLE_SUPER_ADMIN  @map("role-super-admin")
+  ROLE_ADMIN        @map("role-admin")
+  ROLE_USER         @map("role-user")
+  ROLE_CLIENT       @map("role-client")
+}
+
+enum StatusOrderEnum {
+  AWAITING    @map("awaiting") //aguardando
+  PROCESSING  @map("processing") //em processamento
+  PROCESSED   @map("processed") //processado
+  CANCELED    @map("canceled") //cancelado
+}
+
+enum ReviewsStatusEnum {
+  ACCREDITED         @map("accredited")
+  DISAPPROVED        @map("disapproved")
+  AWAITING_ANALYSIS  @map("awaiting analysis")
+}
+
+enum StockActionEnum {
+  ACQUISITION  @map("acquisition") //ENTRADA
+  DEVOLUTION   @map("devolution") //ENTRADA
+  SALE         @map("sale") //SAIDA
+  OTHERS       @map("others") //SAIDA
+}
+
+enum StocksStatusEnum {
+  STOCK_IN   @map("stockIn") //ENTRADA
+  STOCK_OUT  @map("stockOut") //ENTRADA
+}
+
+enum TypeCategoryEnum {
+  MENU   @map("menu")
+  SLIDE  @map("slide")
+}
+
+model Person {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name       String    @postgresdb.VarChar
+  email      String    @unique
+  cpf        String?   @unique
+  rg         String?   @postgresdb.VarChar
+  rgss       String?   @postgresdb.VarChar
+  birth_date DateTime?
+  status     Boolean   @default(true)
+  privacy    Boolean   @default(false)
+  avatar     String?   @postgresdb.VarChar
+
+  // Relation
+  users User[]
+
+  // Relation fields
+  phone_id String?      @unique
+  phone    PhonePerson? @relation("MainPhonePersons", fields: [phone_id], references: [id])
+
+  address_id String?        @unique
+  address    AddressPerson? @relation("MainAddressPersons", fields: [address_id], references: [id])
+
+  //Relation
+
+  addresses AddressPerson[] @relation("MainAddress")
+  phones    PhonePerson[]   @relation("MainPhone")
+  // name table postgresdb
+
+
+  @@map("persons")
+}
+
+model AddressPerson {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  number       Int
+  street       String  @postgresdb.VarChar
+  complement   String?
+  zip_code     String  @postgresdb.VarChar
+  city         String  @postgresdb.VarChar
+  state        String  @postgresdb.VarChar
+  neighborhood String
+
+  // Relation Fields
+  person_id String
+  person    Person @relation("MainAddress", fields: [person_id], references: [id])
+
+  // name table postgresdb
+  mainAddressPersons Person[] @relation("MainAddressPersons")
+
+  @@map("addresses_persons")
+}
+
+model PhonePerson {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  phone String @postgresdb.VarChar
+
+  // Relation Fields
+  person_id        String
+  person           Person   @relation("MainPhone", fields: [person_id], references: [id])
+  // name table postgresdb
+  mainPhonePersons Person[] @relation("MainPhonePersons")
+
+  // name table postgresdb
+  @@map("phones_persons")
+}
+
+model Group {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String @postgresdb.VarChar
+  description String
+
+  // Relation Fields
+  usersGroups UserGroup[]
+
+  // name table postgresdb
+  @@map("groups")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  password    String  @postgresdb.VarChar
+  is_verified Boolean @default(false)
+
+  // Relation Fields
+  person_id String
+  person    Person @relation(fields: [person_id], references: [id])
+
+  // name table postgresdb
+  prices          Price[]
+  orders          Order[]
+  reviews         Review[]
+  usersGroups     UserGroup[]
+  refreshesTokens RefresheToken[]
+  productsInfo    ProductInfo[]
+  OrderProduct    OrderProduct[]
+  ForgotToken     ForgotToken[]
+
+  @@map("users")
+}
+
+model UserGroup {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relation Fields
+  user_id  String
+  user     User   @relation(fields: [user_id], references: [id])
+  group_id String
+  group    Group  @relation(fields: [group_id], references: [id])
+
+  @@id([user_id, group_id])
+  @@map("users_groups")
+}
+
+model RefresheToken {
+
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  refresh_token String   @postgresdb.VarChar
+  device        String   @postgresdb.VarChar
+  expires_date  DateTime
+
+  //Relation fields
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("refreshes_tokens")
+}
+
+model Category {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String           @unique @postgresdb.VarChar
+  type        TypeCategoryEnum @default(MENU)
+  slug        String?          @postgresdb.VarChar
+  description String
+
+  photo String? @postgresdb.VarChar
+
+  // Relation Fields
+
+  // Relation
+  products CategoryProduct[]
+
+  @@map("categories")
+}
+
+model Politic {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name         String @unique @postgresdb.VarChar
+  reading_time Int
+  slug         String @postgresdb.VarChar
+  description  String
+
+  @@map("politics")
+}
+
+model SubCategory {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String @unique @postgresdb.VarChar
+
+  // Relation
+  products Product[]
+
+  @@map("subcategories")
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  total       Decimal         @postgresdb.Decimal(10, 2)
+  freight     Decimal         @postgresdb.Decimal(10, 2)
+  canceled_at DateTime?
+  status      StatusOrderEnum @default(AWAITING)
+
+  // Relation fields
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+
+  //Relation
+  ordersProducts OrderProduct[]
+  transactions   Transaction[]
+
+  @@index([id, user_id])
+  @@map("orders")
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  sku            String?   @postgresdb.VarChar
+  bar_code       String?   @postgresdb.VarChar
+  other          Json?     @postgresdb.Json
+  canceled_at    DateTime?
+  status         Boolean   @default(true)
+  status_freight Boolean   @default(true)
+  status_product Boolean   @default(true)
+
+  //Relation fields
+  price_id String? @unique
+  price    Price?  @relation("ActualPrice", fields: [price_id], references: [id])
+
+  description_id  String
+  description     Description @relation(fields: [description_id], references: [id])
+  subcategory_id  String
+  subcategory     SubCategory @relation(fields: [subcategory_id], references: [id])
+  product_info_id String      @unique
+  product_info    ProductInfo @relation("ProductInfos", fields: [product_info_id], references: [id])
+
+  // Relation
+  categories     CategoryProduct[]
+  photos         Photo[]
+  reviews        Review[]
+  videos         Video[]
+  stocks         Stock[]
+  ordersProducts OrderProduct[]
+  prices         Price[]           @relation("Prices")
+
+  @@index([id])
+  @@map("products")
+}
+
+model CategoryProduct {
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relation fields
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id])
+
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+
+
+  @@id([category_id, product_id])
+  @@unique([category_id, product_id])
+  @@index([category_id, product_id])
+  @@map("categories_products")
+}
+
+model Photo {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name     String @postgresdb.VarChar
+  priority Int    @default(1)
+
+  // Relation fields
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+
+
+  @@index([id, product_id])
+  @@map("photos")
+}
+
+model Price {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  price           Decimal @postgresdb.Decimal(10, 2)
+  price_promotion Decimal @postgresdb.Decimal(10, 2)
+
+  // Relation fields
+  product_id String
+  product    Product @relation("Prices", fields: [product_id], references: [id])
+
+  // name table postgresdb
+  actualProduct Product[] @relation("ActualPrice")
+
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+
+  OrderProduct OrderProduct[]
+
+  @@index([id, product_id])
+  @@map("prices")
+}
+
+model Video {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String @postgresdb.VarChar
+  slug String @postgresdb.VarChar
+
+  // Relation fields
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+
+
+  @@index([id, product_id])
+  @@map("videos")
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  comment String
+  status  ReviewsStatusEnum @default(AWAITING_ANALYSIS)
+
+  // Relation fields
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+  author     User?   @relation(fields: [author_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  author_id  String?
+
+  @@index([id, product_id])
+  @@map("reviews")
+}
+
+model Comment {
+  id   String @id @default(uuid())
+  text String
+  //post      Post @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  //postId    Int
+  //author    User? @relation(fields: [author_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  //author_id  String?
+
+  @@map("comments")
+}
+
+model Description {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  description String
+
+  // Relation
+  products Product[]
+
+
+  @@index([id])
+  @@map("descriptions")
+}
+
+model Banner {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name     String  @postgresdb.VarChar
+  type     String  @postgresdb.VarChar
+  status   Boolean @default(true)
+  priority Int     @default(1)
+
+
+  @@index([id, type])
+  @@map("banners")
+}
+
+model Stock {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  stock  Int
+  status StocksStatusEnum @default(STOCK_IN)
+  action StockActionEnum  @default(SALE)
+
+  // Relation fields
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+
+  @@index([id, product_id, status])
+  @@map("stocks")
+}
+
+model OrderProduct {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  subtotal Decimal         @postgresdb.Decimal(10, 2)
+  quantity Int
+  status   StatusOrderEnum @default(AWAITING)
+
+  // Relation fields
+  order_id   String
+  product_id String
+  user_id    String
+  price_id   String
+  order      Order   @relation(fields: [order_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+  user       User    @relation(fields: [user_id], references: [id])
+  price      Price   @relation(fields: [price_id], references: [id])
+
+  @@index([id, user_id])
+  @@map("orders_products")
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  transaction_id     String  @postgresdb.VarChar
+  status             String  @postgresdb.VarChar
+  brand              String  @postgresdb.VarChar
+  authorization_code String  @postgresdb.VarChar
+  authorized_amount  Decimal @postgresdb.Decimal(10, 2)
+  tid                String  @postgresdb.VarChar
+  installments       String  @postgresdb.VarChar
+
+  // Relation fields
+  order_id String
+  order    Order  @relation(fields: [order_id], references: [id])
+
+  @@index([id, order_id])
+  @@map("transactions")
+}
+
+model ProductInfo {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  price           Decimal @postgresdb.Decimal(10, 2)
+  price_promotion Decimal @postgresdb.Decimal(10, 2)
+  freight         Decimal @postgresdb.Decimal(10, 2)
+  link            String
+  stock           Int
+  company         String  @postgresdb.VarChar
+  currency        String  @postgresdb.VarChar
+
+  //Relation fields
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+
+  //Relation
+  product Product? @relation("ProductInfos")
+
+  @@index([id])
+  @@map("products_info")
+}
+
+model ForgotToken {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  token        String   @postgresdb.VarChar
+  code         String   @postgresdb.VarChar
+  expires_date DateTime
+
+  //Relation fields
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+
+  //Relation
+
+  @@map("forgot_tokens")
+}

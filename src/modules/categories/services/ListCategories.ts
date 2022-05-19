@@ -1,8 +1,8 @@
 import { Category } from '@modules/categories/infra/typeprisma/entities/Category';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
+import { TypeCategoryEnum } from '../../../../prisma/generated/postgres';
 import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
 
 type IProps = {

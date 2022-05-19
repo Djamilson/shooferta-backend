@@ -3,7 +3,7 @@ import ICreateRefreshTokenDTO from '@modules/refreshesTokens/dtos/ICreateRefresh
 import IRefreshesTokensRepository from '@modules/refreshesTokens/repositories/IRefreshesTokensRepository';
 import { IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { RefresheToken } from '@shared/infra/prisma/postgres/generated/postgres';
+import { RefresheToken } from '../../../../../prisma/generated/postgres';
 
 class RefreshesTokensRepository implements IRefreshesTokensRepository {
   private prismaRepository = postgres;
@@ -57,7 +57,7 @@ class RefreshesTokensRepository implements IRefreshesTokensRepository {
   }: IPropsUpdateData): Promise<RefresheToken> {
     const refresheToken = await this.prismaRepository.refresheToken.update({
       where: {
-        id,
+        id: String(id),
       },
       data: updateData,
     });

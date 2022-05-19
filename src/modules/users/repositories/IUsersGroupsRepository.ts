@@ -1,4 +1,4 @@
-import { UserGroup } from "@shared/infra/prisma/postgres/generated/postgres";
+import { UserGroup } from '../infra/typeprisma/entities/UserGroup';
 
 export default interface IUsersGroupsRepository {
   findById(id: string): Promise<UserGroup | null>;

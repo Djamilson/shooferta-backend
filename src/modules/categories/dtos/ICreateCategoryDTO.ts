@@ -1,4 +1,4 @@
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { TypeCategoryEnum } from '../../../../prisma/generated/postgres';
 
 interface ICreateCategoryDTO {
   name: string;

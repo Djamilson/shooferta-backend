@@ -1,6 +1,5 @@
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import slug from '@shared/util/slug';
 import { inject, injectable } from 'tsyringe';
 import { ICreateCategoryDTO } from '../dtos/ICreateCategoryDTO';
@@ -32,7 +31,7 @@ class CreateCategory {
     const newCategory = {
       name,
       description,
-      type: TypeCategoryEnum[type],
+      type,
       slug: slug(name),
     };
 

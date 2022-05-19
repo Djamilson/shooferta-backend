@@ -4,12 +4,10 @@ import { IStocksRepository } from '@modules/stocks/repositories/IStocksRepositor
 import ITransactionsRepository from '@modules/transactions/repositories/ITransactionsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import {
-  StatusOrderEnum,
-  StockActionEnum,
-  StocksStatusEnum,
-} from '@shared/infra/prisma/postgres/generated/postgres';
 import { container, inject, injectable } from 'tsyringe';
+import { StockActionEnum } from '../../../../prisma/generated/postgres';
+import { StocksStatusEnum } from '../../../../prisma/generated/postgres';
+import { StatusOrderEnum } from '../../../../prisma/generated/postgres';
 import { INewOrder } from '../dtos/INewOrder';
 import { Order } from '../infra/typeprisma/entities/Order';
 import IOrdersRepository from '../repositories/IOrdersRepository';
@@ -172,7 +170,6 @@ class CreateOrderService {
         const oldProduct = existentProducts.filter(
           p => p.id === newProduct.product_id,
         )[0];
-
 
         return {
           id: oldProduct.id,

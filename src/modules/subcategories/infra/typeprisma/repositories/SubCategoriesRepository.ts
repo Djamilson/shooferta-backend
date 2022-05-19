@@ -2,7 +2,7 @@ import { ICreateSubCategoryDTO } from '@modules/subcategories/dtos/ICreateSubCat
 import ITotalSubCategoriesDTO from '@modules/subcategories/dtos/ITotalSubCategoriesDTO';
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { SubCategory as SubCategoryPrisma } from '@shared/infra/prisma/postgres/generated/postgres';
+import { SubCategory as SubCategoryPrisma } from '../../../../../../prisma/generated/postgres';
 import { ISubCategoriesRepository } from '../../../repositories/ISubCategoriesRepository';
 import { SubCategory } from '../entities/SubCategory';
 
@@ -87,7 +87,7 @@ class SubCategoriesRepository implements ISubCategoriesRepository {
   }: IPropsUpdateData): Promise<SubCategory> {
     const subCategory = await this.prismaRepository.subCategory.update({
       where: {
-        id,
+        id: String(id),
       },
       data: updateData,
     });

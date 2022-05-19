@@ -3,7 +3,7 @@ import { ITotalOrdersDTO } from '@modules/orders/dtos/ITotalOrdersDTO';
 import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { StatusOrderEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StatusOrderEnum } from '../../../../../../prisma/generated/postgres';
 import { Order } from '../entities/Order';
 
 class OrdersRepository implements IOrdersRepository {

@@ -5,7 +5,7 @@ datasource postgresdb {
 
 generator clientPostgres {
   provider        = "prisma-client-js"
-  output          = "./generated/postgres"
+  output          = "../../../../../prisma/generated/postgres"
   previewFeatures = ["interactiveTransactions"]
 }
 

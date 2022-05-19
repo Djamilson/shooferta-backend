@@ -1,11 +1,10 @@
 import { Photo } from '@modules/products/infra/typeprisma/entities/Photo';
 import { Product } from '@modules/products/infra/typeprisma/entities/Product';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
-import { getUrlImage } from 'utils/getUrlImage';
+import { getUrlImage } from '../../../utils/getUrlImage';
 import IForgottenCartsRepository from '../repositories/IForgottenCartsRepository';
 
 interface IRequest {
@@ -25,9 +24,6 @@ class AllForgottenCartService {
 
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ user_id }: IRequest): Promise<any> {

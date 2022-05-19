@@ -7,7 +7,7 @@ import { IProductsRepository } from '@modules/products/repositories/IProductsRep
 import { IStockProduct } from '@modules/stocks/dtos/IStockProduct';
 import { IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { StocksStatusEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StocksStatusEnum } from '../../../../../../prisma/generated/postgres';
 import { Product } from '../entities/Product';
 
 class ProductsRepository implements IProductsRepository {

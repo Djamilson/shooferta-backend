@@ -1,4 +1,4 @@
-import { StatusOrderEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StatusOrderEnum } from '../../../../prisma/generated/postgres';
 
 type ISerializableProduct = {
   product_id: string;

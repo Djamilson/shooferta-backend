@@ -1,14 +1,12 @@
 import { Product } from '@modules/products/infra/typeprisma/entities/Product';
-import { ReviewsStatusEnum } from '@shared/infra/prisma/postgres/generated/postgres';
 import { Exclude } from 'class-transformer';
+import { ReviewsStatusEnum } from '../../../../../../prisma/generated/postgres';
 
 class Review {
   id: string;
 
   comment: string;
-
   status: ReviewsStatusEnum;
-
   product_id: string;
   product: Product;
 

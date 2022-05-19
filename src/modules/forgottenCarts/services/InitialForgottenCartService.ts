@@ -1,11 +1,10 @@
 import { INewOrder } from '@modules/orders/dtos/INewOrder';
 import { Photo } from '@modules/products/infra/typeprisma/entities/Photo';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
-import { getUrlImage } from 'utils/getUrlImage';
+import { getUrlImage } from '../../../utils/getUrlImage';
 import IForgottenCartsRepository from '../repositories/IForgottenCartsRepository';
 
 type IProps = {
@@ -21,9 +20,6 @@ class InitialForgottenCartService {
 
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ products, user_id }: IProps): Promise<any> {
@@ -34,13 +30,11 @@ class InitialForgottenCartService {
         );
 
         if (checkProductExists) {
-          console.log('Etrou no if');
           const checkForgottenCartExists =
             await this.forgottenCartsRepository.findByUserIdByProductId({
               product_id: item.product_id,
               user_id,
             });
-          console.log('PPPPPD:', checkForgottenCartExists);
 
           if (checkForgottenCartExists) {
             await this.forgottenCartsRepository.update({

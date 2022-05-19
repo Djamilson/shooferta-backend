@@ -1,5 +1,5 @@
 import { IPropsUpdateData } from '@modules/__DTOS';
-import { Prisma } from '@shared/infra/prisma/postgres/generated/postgres';
+import { Prisma } from '../../../../prisma/generated/postgres';
 import { Group } from '../infra/typeprisma/entities/Group';
 
 export default interface IGroupsRepository {

@@ -1,7 +1,7 @@
 import {
   StockActionEnum,
   StocksStatusEnum,
-} from '@shared/infra/prisma/postgres/generated/postgres';
+} from '../../../../prisma/generated/postgres';
 
 type ICreateCategoryProductDTO = {
   category_id: string;

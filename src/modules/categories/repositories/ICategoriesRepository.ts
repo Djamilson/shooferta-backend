@@ -1,12 +1,10 @@
-import { CategoryProduct } from '@modules/products/infra/typeprisma/entities/CategoryProduct';
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
-import { TypeCategoryEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { TypeCategoryEnum } from '../../../../prisma/generated/postgres';
 import { ICategoryPageDTO } from '../dtos/ICategoryPageDTO';
 import { ICreateCategoryDTO } from '../dtos/ICreateCategoryDTO';
 import ITotalCategoriesDTO from '../dtos/ITotalCategoriesDTO';
 import ITotalCategoryIdByProductsDTO from '../dtos/ITotalCategoryIdByProductsDTO';
 import { Category } from '../infra/typeprisma/entities/Category';
-
 
 interface ICategoriesRepository {
   allCategoryProductPagination(

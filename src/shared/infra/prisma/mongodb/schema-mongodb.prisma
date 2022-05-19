@@ -1,9 +1,6 @@
 generator clientMongoDb {
   provider = "prisma-client-js"
-  output   = "./generated/mongodb"
-  //previewFeatures = []
-  //binaryTargets   = ["darwin", "linux-musl", "debian-openssl-1.1.x", "rhel-openssl-1.0.x"]
-
+  output   = "../../../../../prisma/generated/mongodb"
 }
 
 datasource db {

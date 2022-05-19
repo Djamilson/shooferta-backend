@@ -1,4 +1,7 @@
-import { StockActionEnum, StocksStatusEnum } from "@shared/infra/prisma/postgres/generated/postgres";
+import {
+  StockActionEnum,
+  StocksStatusEnum,
+} from '../../../../prisma/generated/postgres';
 
 interface ICreateStockDTO {
   stock: number;

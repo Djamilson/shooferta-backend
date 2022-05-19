@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
-import { getUrlImage } from 'utils/getUrlImage';
+import { getUrlImage } from '../../../utils/getUrlImage';
 import { Photo } from '../infra/typeprisma/entities/Photo';
 import { IProductsRepository } from '../repositories/IProductsRepository';
 

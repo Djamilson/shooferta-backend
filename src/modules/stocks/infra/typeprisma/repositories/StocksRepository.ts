@@ -2,7 +2,7 @@ import { ICreateStockDTO } from '@modules/stocks/dtos/ICreateStockDTO';
 import { IStocksRepository } from '@modules/stocks/repositories/IStocksRepositories';
 import { IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
-import { StocksStatusEnum } from '@shared/infra/prisma/postgres/generated/postgres';
+import { StocksStatusEnum } from '../../../../../../prisma/generated/postgres';
 import { Stock } from '../entities/Stock';
 
 class StocksRepository implements IStocksRepository {
@@ -65,7 +65,7 @@ class StocksRepository implements IStocksRepository {
   }
 
   public async createList(meData: ICreateStockDTO[]): Promise<void> {
-    console.log("Vou alterar o stock:", JSON.stringify(meData, null, 2))
+    console.log('Vou alterar o stock:', JSON.stringify(meData, null, 2));
     await this.prismaRepository.stock.createMany({
       data: meData,
     });

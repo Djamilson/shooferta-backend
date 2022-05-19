@@ -1,13 +1,13 @@
 import {
   IPoliticsRepository,
-  ITotalPoliticsDTO,
+  ITotalPoliticsDTO
 } from '@modules/politics/repositories/IPoliticsRepository';
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
 import { postgres } from '@shared/infra/prisma/lib/prismaClient';
 import {
   Politic as PoliticPrisma,
-  Prisma,
-} from '@shared/infra/prisma/postgres/generated/postgres';
+  Prisma
+} from '../../../../../../prisma/generated/postgres';
 import { Politic } from '../entities/Politic';
 
 class PoliticsRepository implements IPoliticsRepository {

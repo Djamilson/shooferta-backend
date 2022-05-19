@@ -1,9 +1,7 @@
+import { Price } from '@modules/prices/infra/typeprisma/entities/Price';
 import { Product } from '@modules/products/infra/typeprisma/entities/Product';
 import User from '@modules/users/infra/typeprisma/entities/User';
-import {
-  Price,
-  StatusOrderEnum,
-} from '@shared/infra/prisma/postgres/generated/postgres';
+import { StatusOrderEnum } from '../../../../../../prisma/generated/postgres';
 import { Order } from './Order';
 
 class OrderProduct {
