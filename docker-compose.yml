@@ -1,6 +1,6 @@
 version: '3.7'
-
 services:
+
   postgres:
     image: postgres:10
     restart: always
@@ -11,19 +11,27 @@ services:
     ports:
       - '45432:5432'
 
-  mongo:
-    build: ./mongodb_replica
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 35c9bc2d86cd68ca5b68a1330ab31b4
-      MONGO_REPLICA_HOST: localhost
-      MONGO_REPLICA_PORT: 27017
-    ports:
-      - '27017:27017'
-
   redis:
     image: redis:alpine
     environment:
       - REDIS_PASSWORD:35c9bc2d86cd68ca5b68a1330ab31b4
     ports:
       - 56379:6379
+
+  mongodb_container:
+    # This image automatically creates a replica set required for transactions
+    image: prismagraphql/mongo-single-replica:4.4.3-bionic
+    restart: always
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 35c9bc2d86cd68ca5b68a1330ab31b4
+
+    ports:
+      - 27017:27017
+
+    volumes:
+      - mongo:/var/lib/mongo
+
+volumes:
+  mongo:

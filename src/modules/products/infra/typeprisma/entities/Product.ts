@@ -34,7 +34,7 @@ class Product {
   subcategory_id: string;
 
   order_products?: OrderProduct[];
-  
+
   @Exclude()
   created_at: Date;
 
@@ -65,7 +65,7 @@ class Product {
 
     switch (uploadConfig.driver) {
       case 'disk':
-        return `${process.env.APP_URL_BACKEND}/files/${this.photos[0].name}`;
+        return `${process.env.APP_URL_BACKEND}:${process.env.API_PORT}/files/${this.photos[0].name}`;
       case 's3':
         return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.photos[0].name}`;
       default:

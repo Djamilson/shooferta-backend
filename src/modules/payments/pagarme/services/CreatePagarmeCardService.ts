@@ -58,10 +58,28 @@ class CreatePagarmeCardService {
     total,
   }: IRequest): Promise<IPagarme> {
     try {
-     const client = await pagarme.client.connect({
+
+            console.log(
+              'Passo 01',
+              JSON.stringify(
+                {
+                  order_id,
+                  fee,
+                  card_hash,
+                  userExists,
+                  products: items,
+                  total,
+                },
+                null,
+                2,
+              ),
+            );
+
+      const client = await pagarme.client.connect({
         api_key: process.env.PAGARME_API_KEY,
       });
 
+            console.log('Passo 01 client', JSON.stringify(client, null, 2));
 
       const customer = {
         external_id: userExists.id,
@@ -74,12 +92,12 @@ class CreatePagarmeCardService {
           {
             type: 'cpf',
             number: String(userExists.person.cpf),
-          }
+          },
         ],
         phone_numbers: [`+55${userExists.person.phone?.phone}`],
         birthday: format(userExists.person?.birth_date, 'yyyy-MM-dd'),
       };
-
+            console.log('customer', JSON.stringify(customer, null, 2));
 
       const meAddress = {
         country: 'br',
@@ -91,8 +109,10 @@ class CreatePagarmeCardService {
         street_number: String(userExists.person.address?.number),
         zipcode: String(userExists.person.address?.zip_code),
       };
+       console.log('customer', JSON.stringify(meAddress, null, 2));
 
-     const tte = {
+
+      const tte = {
         api_key: process.env.PAGARME_API_KEY,
         card_hash,
         amount: parseInt(String(total * 100), 10),
@@ -120,8 +140,10 @@ class CreatePagarmeCardService {
 
         items,
       };
+      console.log('tte tte', JSON.stringify(tte, null, 2));
 
-    const pagarmeTransaction = await client.transactions.create(tte);
+      const pagarmeTransaction = await client.transactions.create(tte);
+      console.log('Pasoou', JSON.stringify(pagarmeTransaction, null, 2));
 
       const {
         id: transaction_id,
