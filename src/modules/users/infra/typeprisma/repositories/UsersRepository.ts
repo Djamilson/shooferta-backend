@@ -1,7 +1,4 @@
-import {
-  ICreatePersonAndPhoneAndAddressDTO,
-  ICreateUserDTO,
-} from '@modules/users/dtos/ICreateDTO';
+import { ICreatePersonAndPhoneAndAddressDTO, ICreateUserDTO } from '@modules/users/dtos/ICreateDTO';
 import { ITotalUsersDTO } from '@modules/users/dtos/ITotalUsersDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { IDataPageDTO, IPropsUpdateData } from '@modules/__DTOS';
@@ -96,12 +93,11 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
-
-
   public async findByIdAllData(id: string): Promise<any> {
     return this.prismaRepository.user.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
         person: {
           select: {
             id: true,
@@ -113,17 +109,18 @@ class UsersRepository implements IUsersRepository {
             cpf: true,
             rg: true,
             birth_date: true,
-            address: true,
-            phone: true,
-          },
-        },
-        usersGroups: {
-          select: {
-            group: {
+            phone: { select: { id: true, person_id: true, phone: true, } },
+            address: {
               select: {
                 id: true,
-                name: true,
-                description: true,
+                number: true,
+                street: true,
+                complement: true,
+                zip_code: true,
+                city: true,
+                state: true,
+                neighborhood: true,
+                person_id: true,
               },
             },
           },
@@ -147,7 +144,20 @@ class UsersRepository implements IUsersRepository {
             cpf: true,
             rg: true,
             birth_date: true,
-            address: true,
+            phone: { select: { id: true, person_id: true, phone: true } },
+            address: {
+              select: {
+                id: true,
+                number: true,
+                street: true,
+                complement: true,
+                zip_code: true,
+                city: true,
+                state: true,
+                neighborhood: true,
+                person_id: true,
+              },
+            },
           },
         },
         usersGroups: {

@@ -5,9 +5,11 @@ import ITransactionsRepository from '@modules/transactions/repositories/ITransac
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import { container, inject, injectable } from 'tsyringe';
-import { StockActionEnum } from '../../../../prisma/generated/postgres';
-import { StocksStatusEnum } from '../../../../prisma/generated/postgres';
-import { StatusOrderEnum } from '../../../../prisma/generated/postgres';
+import {
+  StatusOrderEnum,
+  StockActionEnum,
+  StocksStatusEnum,
+} from '../../../../prisma/generated/postgres';
 import { INewOrder } from '../dtos/INewOrder';
 import { Order } from '../infra/typeprisma/entities/Order';
 import IOrdersRepository from '../repositories/IOrdersRepository';
@@ -157,14 +159,16 @@ class CreateOrderService {
         };
       });
 
-      console.log(
+      /*console.log(
         'serializadProducts::',
         JSON.stringify(serializadProducts, null, 2),
-      );
+      );*/
 
       const total = serializadProducts.reduce((totalsum, item) => {
+        console.log('item.subtotal::', item.subtotal);
         return totalsum + item.subtotal;
       }, 0);
+      console.log('::Total::', total);
 
       const serializadProductsPagarme = products.map(newProduct => {
         const oldProduct = existentProducts.filter(
