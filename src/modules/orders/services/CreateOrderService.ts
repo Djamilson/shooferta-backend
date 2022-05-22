@@ -175,6 +175,26 @@ class CreateOrderService {
           p => p.id === newProduct.product_id,
         )[0];
 
+        console.log('=>>>>>ParseInt: inn', oldProduct.price.price_promotion),
+          console.log(
+            '=>>>>>Agora vai funfa::',
+            String(oldProduct.price.price_promotion).replace('.', ''),
+          ),
+          console.log(
+            '=>>>>>Agora vai funfa::',
+            parseInt(
+              String(oldProduct.price.price_promotion).replace('.', ''),
+              10,
+            ),
+          ),
+          console.log(
+            '=>>>>>ParseInt: inn',
+            String(oldProduct.price.price_promotion * 100),
+          ),
+          console.log(
+            '=>>>>>ParseInt:',
+            parseInt(String(oldProduct.price.price_promotion * 100), 10),
+          );
         return {
           id: oldProduct.id,
           tangible: true,
@@ -182,10 +202,18 @@ class CreateOrderService {
           quantity: newProduct.amount,
           unit_price:
             oldProduct.price.price_promotion > 0
-              ? parseInt(String(oldProduct.price.price_promotion * 100), 10)
-              : parseInt(String(oldProduct.price.price * 100), 10),
+              ? parseInt(
+                  String(oldProduct.price.price_promotion).replace('.', ''),
+                  10,
+                )
+              : parseInt(String(oldProduct.price.price).replace('.', ''), 10),
         };
       });
+
+      console.log(
+        '::serializadProductsPagarme::',
+        JSON.stringify(serializadProductsPagarme, null, 2),
+      );
 
       const newOrder = await this.ordersRepository.create({
         user_id: userExists.id,
