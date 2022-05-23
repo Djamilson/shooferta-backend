@@ -141,7 +141,7 @@ class CreatePagarmeCardService {
       console.log('tte tte', JSON.stringify(tte, null, 2));
 
       const pagarmeTransaction = await client.transactions.create(tte);
-      console.log('Pasoou', JSON.stringify(pagarmeTransaction, null, 2));
+      console.log('Passoou', JSON.stringify(pagarmeTransaction, null, 2));
 
       const {
         id: transaction_id,
