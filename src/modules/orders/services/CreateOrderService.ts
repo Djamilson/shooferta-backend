@@ -164,17 +164,41 @@ class CreateOrderService {
         JSON.stringify(serializadProducts, null, 2),
       );*/
 
-      const total = serializadProducts.reduce((totalsum, item) => {
-        console.log('item.subtotal::', item.subtotal);
-        return totalsum + item.subtotal;
-      }, 0);
+      const total =
+        serializadProducts.reduce((totalsum, item) => {
+          console.log('item.subtotal::', item.subtotal);
+          return (
+            totalsum + parseInt(String(item.subtotal).replace('.', ''), 10)
+          );
+        }, 0) / 100;
       console.log('::Total::', total);
 
       const serializadProductsPagarme = products.map(newProduct => {
         const oldProduct = existentProducts.filter(
           p => p.id === newProduct.product_id,
         )[0];
+        console.log('=PPPPPPPPPP', oldProduct.price.price_promotion);
 
+        console.log(
+          '=PPPPPPPPPP2',
+          parseInt(
+            String(oldProduct.price.price_promotion).replace('.', ''),
+            10,
+          ),
+        );
+
+        console.log(
+          '=PPPPPPPPPP3',
+          parseInt(String(oldProduct.price.price).replace('.', ''), 10),
+        );
+        console.log(
+          oldProduct.price.price_promotion > 0
+            ? parseInt(
+                String(oldProduct.price.price_promotion).replace('.', ''),
+                10,
+              )
+            : parseInt(String(oldProduct.price.price).replace('.', ''), 10),
+        );
         return {
           id: oldProduct.id,
           tangible: true,
@@ -182,15 +206,26 @@ class CreateOrderService {
           quantity: newProduct.amount,
           unit_price:
             oldProduct.price.price_promotion > 0
-              ? parseInt(String(oldProduct.price.price_promotion * 100), 10)
-              : parseInt(String(oldProduct.price.price * 100), 10),
+              ? parseInt(
+                  String(oldProduct.price.price_promotion).replace('.', ''),
+                  10,
+                )
+              : parseInt(String(oldProduct.price.price).replace('.', ''), 10),
         };
       });
+
+      console.log(
+        '::serializadProductsPagarme::',
+        JSON.stringify(serializadProductsPagarme, null, 2),
+      );
 
       const newOrder = await this.ordersRepository.create({
         user_id: userExists.id,
         serializableProducts: serializadProducts,
-        total: total + freight,
+        total:
+          (parseInt(String(total).replace('.', ''), 10) +
+            parseInt(String(freight).replace('.', ''), 10)) /
+          100,
         status: StatusOrderEnum.AWAITING,
         freight,
       });
