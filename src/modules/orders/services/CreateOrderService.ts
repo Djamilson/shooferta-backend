@@ -166,39 +166,22 @@ class CreateOrderService {
 
       const total =
         serializadProducts.reduce((totalsum, item) => {
-          console.log('item.subtotal::', item.subtotal);
           return (
             totalsum + parseInt(String(item.subtotal).replace('.', ''), 10)
           );
         }, 0) / 100;
+
+      const formatTotal =
+        (parseInt(String(total).replace('.', ''), 10) +
+          parseInt(String(freight).replace('.', ''), 10)) /
+        100;
       console.log('::Total::', total);
 
       const serializadProductsPagarme = products.map(newProduct => {
         const oldProduct = existentProducts.filter(
           p => p.id === newProduct.product_id,
         )[0];
-        console.log('=PPPPPPPPPP', oldProduct.price.price_promotion);
 
-        console.log(
-          '=PPPPPPPPPP2',
-          parseInt(
-            String(oldProduct.price.price_promotion).replace('.', ''),
-            10,
-          ),
-        );
-
-        console.log(
-          '=PPPPPPPPPP3',
-          parseInt(String(oldProduct.price.price).replace('.', ''), 10),
-        );
-        console.log(
-          oldProduct.price.price_promotion > 0
-            ? parseInt(
-                String(oldProduct.price.price_promotion).replace('.', ''),
-                10,
-              )
-            : parseInt(String(oldProduct.price.price).replace('.', ''), 10),
-        );
         return {
           id: oldProduct.id,
           tangible: true,
@@ -214,18 +197,10 @@ class CreateOrderService {
         };
       });
 
-      console.log(
-        '::serializadProductsPagarme::',
-        JSON.stringify(serializadProductsPagarme, null, 2),
-      );
-
       const newOrder = await this.ordersRepository.create({
         user_id: userExists.id,
         serializableProducts: serializadProducts,
-        total:
-          (parseInt(String(total).replace('.', ''), 10) +
-            parseInt(String(freight).replace('.', ''), 10)) /
-          100,
+        total: formatTotal,
         status: StatusOrderEnum.AWAITING,
         freight,
       });
@@ -241,24 +216,19 @@ class CreateOrderService {
         status: StocksStatusEnum.STOCK_OUT,
       }));
 
-      console.log(
-        'serializadProducts:',
-        JSON.stringify(serializadProductsPagarme, null, 2),
-      );
-
       await this.stocksRepository.createList(orderedProductsQuantity);
 
       console.log('vai iniciar o createPagarmeCard');
 
       const pagarmeCreate = await createPagarmeCard.execute({
         order_id,
-        fee: 100,
+        fee: freight,
         card_hash: token,
         userExists,
         products: serializadProductsPagarme,
         user_id,
         installments: String(installments),
-        total: total + 100,
+        total: formatTotal,
       });
 
       console.log('vai iniciar o passou:', pagarmeCreate);
@@ -278,11 +248,6 @@ class CreateOrderService {
         installments: '1',
         order_id,
       });
-
-      /*this.actionsOrdersRepository.create({
-        order: newOrder,
-        status: Status.AWAITING,
-      });*/
 
       return newOrder;
     } catch (error: any) {

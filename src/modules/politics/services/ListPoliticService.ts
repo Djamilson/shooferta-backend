@@ -15,7 +15,7 @@ class ListPoliticService {
   ) {}
 
   async execute(): Promise<Politic[] | null> {
-    const cachekey = `politics`;
+    const cachekey = `politics:dashboard`;
 
     let politics = await this.cacheProvider.recover<any>(cachekey);
 
